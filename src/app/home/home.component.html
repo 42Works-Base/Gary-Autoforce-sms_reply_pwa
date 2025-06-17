@@ -1,0 +1,61 @@
+<section class="main-section">
+    <div class="box-wrapper">
+        <app-loader [loading]="loading"></app-loader>
+        <div class="main-box" *ngIf="!loading">
+            <div class="small-overlay" *ngIf="sendSmsProgress">
+                <img src="assets/images/small-loader.gif" alt="Small Loader" class="small-loader" />
+            </div>
+            <div>
+                <img class="box-logo" [src]="pwaData?.logo || 'assets/images/login_logo.png'" alt="img" />
+            </div>
+            <div class="box-gray p-3 mt-3 text-center" *ngIf="!displayMessage">
+                <!-- <p class="mb-0">
+                   {{pwaData?.top_content}}
+                </p> -->
+                <p class="mb-0" [innerHTML]="processedTopContent"></p>
+            </div>
+
+            <div class="box-main-content my-3">
+                <div *ngIf="!displayMessage">
+                    <div class="row" *ngIf="errorMsg != null || successMsg != null ">
+                        <div class="col-sm-12">
+                            <div #infoMessages class="infoMessages">
+                                <div class="alert alert-danger d-flex justify-content-between align-items-center py-2" *ngIf="errorMsg != null ">
+                                   {{errorMsg}} <span role="button" class="cross" (click)="hideMessages()">X</span>
+                                </div>
+                                <!-- <div class="alert alert-success d-flex justify-content-between align-items-center py-2" *ngIf="successMsg != null ">
+                                   {{successMsg}} <span role="button" class="cross" (click)="hideMessages()">X</span>
+                                </div> -->
+                            </div>
+                        </div>                     
+                    </div> 
+    
+                    <form *ngIf="pwaData">
+                        <input type="text" placeholder="[Name]" value="{{ pwaData.name}}" class="form-input-control" [readOnly]="true"/>
+                        <input type="text" placeholder="[Mobile Number]" value="{{ pwaData.phone}}" class="form-input-control" [readOnly]="true"/>
+                        <input type="text" placeholder="[Vehicle/Rego]" name="rego" value="{{ pwaData.rego}}" class="form-input-control" [readOnly]="true"/>
+						<!--[readOnly]="!!pwaData.rego"-->
+                        <textarea class="form-textarea-control" name="afMessage" placeholder="Enter your reply here*" [(ngModel)]="afMessage" ></textarea>
+    
+                        <p class="my-3 text-center">
+                            By submitting you agree to receive text messages at the number provided (message/data rates apply)
+                        </p>
+    
+                        <input type="submit" class="form-input-btn" value="Send" (click)="sendSms()" [disabled]="sendSmsProgress" />
+                    </form>
+                </div>
+                <div class="display-message" *ngIf="displayMessage">
+                    <p class="my-3 text-center">
+                        {{displayMessage}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer d-flex justify-content-center">
+        <a *ngIf="environment" href="{{environment.website}}"class="d-inline-block">
+            <img src="/assets/images/video-footer-logo.png" alt="SMS" />
+        </a>
+    </div>
+</section>
